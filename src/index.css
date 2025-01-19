@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    .dark {
+      --bg-color: #1a202c; /* Dark background */
+      --text-color: #f7fafc; /* Light text */
+    }
+  }
