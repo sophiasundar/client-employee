@@ -22,6 +22,14 @@ const Sidebar = () => {
           </li>
           <li>
             <a
+              href="/employee-dashboard"
+              className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
+            >
+              <FaUsers className="mr-3" /> Employee Dashboard
+            </a>
+          </li>
+          <li>
+            <a
               href="/employees/:id"
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >

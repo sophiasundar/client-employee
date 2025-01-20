@@ -117,6 +117,49 @@ export const createTask = createAsyncThunk(
   }
 );
 
+// Async Thunk for assigning task to employee
+export const assignTaskToEmployee = createAsyncThunk(
+  'tasks/assignTaskToEmployee',
+  async ({ taskCode, employeeEmail }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/tasks/assign', { taskCode, employeeEmail });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data); 
+    }
+  }
+);
+
+
+// Thunk to get a task by ID
+export const getTaskById = createAsyncThunk(
+  'tasks/getTaskById',
+  async (taskId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API}/api/tasks/${taskId}`);
+      return response.data.task;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+
+// Thunk to update task status
+export const updateTaskStatus = createAsyncThunk(
+  'tasks/updateTaskStatus',
+  async ({ taskId, status }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${API}/api/tasks/status/${taskId}`, { status });
+      return response.data.task;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 
 
 const tasksSlice = createSlice({
@@ -202,6 +245,41 @@ const tasksSlice = createSlice({
       })
       .addCase(createTask.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      builder
+      .addCase(assignTaskToEmployee.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(assignTaskToEmployee.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // Optionally update tasks list after assigning the task
+        state.tasks = [...state.tasks, action.payload.task];
+      })
+      .addCase(assignTaskToEmployee.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload.message;
+      })
+      .addCase(getTaskById.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getTaskById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.task = action.payload;
+      })
+      .addCase(getTaskById.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(updateTaskStatus.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateTaskStatus.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.task = action.payload;
+      })
+      .addCase(updateTaskStatus.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.payload;
       });
   },

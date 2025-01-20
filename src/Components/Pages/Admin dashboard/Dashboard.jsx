@@ -34,7 +34,7 @@ const Dashboard = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-700">Create Task</h2>
-            <p className="mt-2 text-gray-500">Create task for employee.</p>
+            <p className="mt-2 text-gray-500">Create task for employee by admin, easy to create task.</p>
             <button
               className="mt-4 w-full py-2 px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
               onClick={() => navigate('/create-task')}
@@ -43,34 +43,13 @@ const Dashboard = () => {
             </button>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold text-gray-700">Update Task</h2>
-            <p className="mt-2 text-gray-500">Approve or reject employee tasks.</p>
-            <button
-              className="mt-4 w-full py-2 px-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
-              onClick={() => navigate('/edit-task')}
-            >
-             Edit Task
-            </button>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold text-gray-700">Remove Task</h2>
-            <p className="mt-2 text-gray-500">Delete task of the employee if the task is completed and approved.</p>
-            <button
-              className="mt-4 w-full py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
-              onClick={() => navigate('/delete-task')}
-            >
-             Delete Task
-            </button>
-            </div>
 
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-700">Task Assigning</h2>
             <p className="mt-2 text-gray-500">Assign tasks to employees and manage their progress.</p>
             <button
               className="mt-4 w-full py-2 px-4 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
-              onClick={() => navigate('/Task-assign')}
+              onClick={() => navigate('/task-assign')}
             >
               Assign Task
             </button>
@@ -78,7 +57,7 @@ const Dashboard = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-700">Task Approval</h2>
-            <p className="mt-2 text-gray-500">Approve or reject employee tasks.</p>
+            <p className="mt-2 text-gray-500">Approve or reject tasks, when the employee completed the task.</p>
             <button
               className="mt-4 w-full py-2 px-4 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition"
               onClick={() => navigate('/Approval')}

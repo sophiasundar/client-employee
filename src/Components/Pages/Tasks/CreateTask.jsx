@@ -10,9 +10,11 @@ const CreateTask = () => {
     title: '',
     description: '',
     status: 'To-Do',
+    employeeEmail: '', 
     assignedTo: '', // This will store the name
     deadline: '',
     project: '',
+   
   });
 
   const handleInputChange = (e) => {
@@ -87,6 +89,17 @@ const CreateTask = () => {
             type="text"
             name="project"
             value={taskData.project}
+            onChange={handleInputChange}
+            className="w-full mt-2 p-2 border rounded-lg"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700">Email</label>
+          <input
+            type="email"
+            name="employeeEmail" // Matches with the state key
+            value={taskData.employeeEmail}
             onChange={handleInputChange}
             className="w-full mt-2 p-2 border rounded-lg"
           />

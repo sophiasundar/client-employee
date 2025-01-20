@@ -126,11 +126,15 @@ const AllTasks = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {tasks.map((task) => (
                         <div key={task._id} className="bg-white rounded-lg shadow-md p-6">
+                            <p className="text-white bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg px-4 py-2 mb-4 inline-block text-l font-semibold shadow-md">
+                                TaskCode : {task.taskCode}
+</p>
+
                             <h2 className="text-xl font-semibold text-gray-800">{task.title}</h2>
                             <p className="text-gray-600 mb-4">{task.description}</p>
                             <div className="flex flex-wrap gap-2 mb-2">
-                                <span className={`px-3 py-1 rounded-full text-sm ${getStatusClass(task.status)}`}>{task.status}</span>
-                                <span className="px-3 py-1 rounded-full bg-gray-100 text-sm">{task.project}</span>
+                                <span className={`px-3 py-1 rounded-full text-sm ${getStatusClass(task.status)}`}>Status : {task.status}</span>
+                                <span className="px-3 py-1 rounded-full bg-gray-100 text-sm">Project : {task.project}</span>
                                 <span className="px-3 py-1 rounded-full bg-gray-100 text-sm">{`Deadline: ${new Date(task.deadline).toLocaleDateString()}`}</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
@@ -138,8 +142,9 @@ const AllTasks = () => {
                                     {`Assigned To: ${task.assignedTo && task.assignedTo.user ? task.assignedTo.user.name : 'Unassigned'}`}
                                 </span>
                                 <span className={`px-3 py-1 rounded-full text-sm ${getApprovalClass(task.approvalStatus)}`}>
-                                    {task.approvalStatus}
+                                   Approval Status : {task.approvalStatus}
                                 </span>
+                                
                             </div>
                             <div className="mt-4 flex gap-2">
                                 <button
