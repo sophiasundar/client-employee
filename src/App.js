@@ -12,6 +12,7 @@ import AllTasks from './Components/Pages/Tasks/AllTasks';
 import CreateTask from './Components/Pages/Tasks/CreateTask';
 import AssignTask from './Components/Pages/Tasks/AssignTask';
 import TaskDetails from './Components/Pages/Tasks/TaskDetailsforEmployee';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 
 function App() {
@@ -23,15 +24,27 @@ function App() {
 
          <Route path='/register' element={<Register/>}></Route>
          <Route path='/' element={<Login/>}></Route>
+         <Route path='/dashboard' element={<Dashboard/>} /> 
 
-         <Route path='/dashboard' element={<Dashboard/>} />    
+         <Route element={<ProtectedRoute roles={['admin']} />}>
+
+           
          <Route path='/employees' element={<CreateEmployee/>}/>
-        <Route path='/employees/:id' element={<EmployeesPage />} />
-        <Route path='/employees-record' element={<EmployeesRecord/>} />
-        <Route path='/tasks' element={<AllTasks/>} />
-        <Route path='/create-task' element={<CreateTask/>}/>
-        <Route path='/task-assign' element={<AssignTask />}/>
+         <Route path='/employees-record' element={<EmployeesRecord/>} />
+         <Route path='/tasks' element={<AllTasks/>} />
+         <Route path='/create-task' element={<CreateTask/>}/>
+         <Route path='/task-assign' element={<AssignTask />}/>
+
+         </Route>
+
+         <Route element={<ProtectedRoute roles={['employee']} />}>
+
+         
+        <Route path='/employees/:id' element={<EmployeesPage />} /> 
         <Route path='/employee-dashboard' element={<TaskDetails/>}/>
+        </Route>
+
+        
 
       </Routes>
       <ToastContainer

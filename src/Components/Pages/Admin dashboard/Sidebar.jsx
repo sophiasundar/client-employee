@@ -1,8 +1,23 @@
-import { FaHome, FaUsers, FaTasks, FaCog, FaUserCircle } from 'react-icons/fa';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../Redux/authSlice'; 
+import { FaHome, FaUsers, FaTasks, FaCog, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';  
+import { toast } from 'react-toastify';  
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("Logged out successfully!");  
+    navigate('/'); 
+  };
+
   return (
-    <div className="h-full w-64 bg-gradient-to-b from-pink-500 to-teal-600 text-white p-6 shadow-lg rounded-lg">
+    <div className="h-full w-80 bg-gradient-to-b from-pink-500 to-teal-600 text-white p-6 shadow-lg rounded-lg"> 
       <div className="flex items-center mb-6">
         <FaUserCircle className="text-4xl mr-3" />
         <div>
@@ -13,44 +28,52 @@ const Sidebar = () => {
       <nav>
         <ul className="space-y-4">
           <li>
-            <a
-              href="/dashboard"
+            <Link
+              to="/dashboard"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
               <FaHome className="mr-3" /> Admin Dashboard
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/employee-dashboard"
+            <Link
+              to="/employee-dashboard"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
               <FaUsers className="mr-3" /> Employee Dashboard
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/employees/:id"
+            <Link
+              to="/employees/:id"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
               <FaUsers className="mr-3" /> Employee Record
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/tasks"
+            <Link
+              to="/tasks"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
-              <FaTasks className="mr-3" /> Tasks(All Employees)
-            </a>
+              <FaTasks className="mr-3" /> Tasks (All Employees)
+            </Link>
           </li>
           <li>
-            <a
-              href="/settings"
+            <Link
+              to="/settings"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
               <FaCog className="mr-3" /> Settings
-            </a>
+            </Link>
+          </li>
+          <li>
+            <button
+              onClick={handleLogout}
+              className="flex items-center w-full py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105 text-left"
+            >
+              <FaSignOutAlt className="mr-3" /> Logout
+            </button>
           </li>
         </ul>
       </nav>
@@ -59,3 +82,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
