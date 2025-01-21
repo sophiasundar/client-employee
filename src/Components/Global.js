@@ -1,3 +1,3 @@
-export const API = 'http://localhost:8000';
+export const API = 'https://be-employee.onrender.com';
 
-// https://be-employee.onrender.com
+// http://localhost:8000
