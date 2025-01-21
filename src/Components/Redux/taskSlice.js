@@ -120,15 +120,33 @@ export const createTask = createAsyncThunk(
 // Async Thunk for assigning task to employee
 export const assignTaskToEmployee = createAsyncThunk(
   'tasks/assignTaskToEmployee',
-  async ({ taskCode, employeeEmail }, { rejectWithValue }) => {
+  async ({ taskCode, employeeEmail }, { getState, rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/tasks/assign', { taskCode, employeeEmail });
-      return response.data;
+      const state = getState();
+      const token = state.auth.token; 
+
+      if (!token) {
+        return rejectWithValue("No token found. Please log in.");
+      }
+
+      const response = await axios.put(
+        `${API}/api/task/assign`, 
+        { taskCode, employeeEmail },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Authorization header
+          },
+        }
+      );
+
+      return response.data; 
     } catch (error) {
-      return rejectWithValue(error.response.data); 
+      const errorMsg = error.response?.data || 'An error occurred';
+      return rejectWithValue(errorMsg);
     }
   }
 );
+
 
 
 // Thunk to get a task by ID
