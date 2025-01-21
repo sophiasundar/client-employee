@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../../Redux/taskSlice';
+import Sidebar from '../Admin dashboard/Sidebar';
 
 const CreateTask = () => {
   const dispatch = useDispatch();
@@ -32,39 +33,42 @@ const CreateTask = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Create New Task</h2>
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+    <div className="flex h-screen ">
+    <Sidebar/>
+    <main className="flex-1 p-6 mb-8">
+    <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-3">Create New Task</h2>
+      {error && <div className="text-red-500 mb-3">{error}</div>}
       
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block text-gray-700">Title</label>
           <input
             type="text"
             name="title"
             value={taskData.title}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border rounded-lg"
+            className="w-full mt-2 p-2 border rounded-lg text-sm"
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block text-gray-700">Description</label>
           <textarea
             name="description"
             value={taskData.description}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border rounded-lg"
+            className="w-full mt-2 p-2 border rounded-lg text-sm"
           ></textarea>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block text-gray-700">Status</label>
           <select
             name="status"
             value={taskData.status}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border rounded-lg"
+            className="w-full mt-2 p-2 border rounded-lg text-sm"
           >
             <option value="To-Do">To-Do</option>
             <option value="In Progress">In Progress</option>
@@ -72,36 +76,36 @@ const CreateTask = () => {
           </select>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block text-gray-700">Deadline</label>
           <input
             type="date"
             name="deadline"
             value={taskData.deadline}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border rounded-lg"
+            className="w-full mt-2 p-2 border rounded-lg text-sm"
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block text-gray-700">Project</label>
           <input
             type="text"
             name="project"
             value={taskData.project}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border rounded-lg"
+            className="w-full mt-2 p-2 border rounded-lg text-sm"
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="block text-gray-700">Email</label>
           <input
             type="email"
             name="employeeEmail" 
             value={taskData.employeeEmail}
             onChange={handleInputChange}
-            className="w-full mt-2 p-2 border rounded-lg"
+            className="w-full mt-2 p-2 border rounded-lg text-sm"
           />
         </div>
 
@@ -113,6 +117,8 @@ const CreateTask = () => {
           {loading ? 'Creating Task...' : 'Create Task'}
         </button>
       </form>
+    </div>
+    </main>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTaskById, updateTaskStatus } from '../../Redux/taskSlice';
+import Sidebar from '../Admin dashboard/Sidebar';
 
 const TaskDetails = () => {
   const [taskId, setTaskId] = useState('');
@@ -23,6 +24,9 @@ const TaskDetails = () => {
   };
 
   return (
+    <div className="flex h-screen bg-gray-100">
+    <Sidebar />
+    <main className="flex-1 p-8">
     <div className="p-4 max-w-xl mx-auto bg-white rounded shadow-lg">
       <h1 className="text-2xl font-semibold mb-4">Task Details</h1>
 
@@ -79,6 +83,8 @@ const TaskDetails = () => {
       {taskStatus === 'failed' && (
         <div className="text-red-500 mt-4">{error?.message || 'Failed to update task'}</div>
       )}
+    </div>
+    </main>
     </div>
   );
 };

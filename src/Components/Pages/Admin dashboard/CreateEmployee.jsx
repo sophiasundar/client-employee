@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createEmployee } from '../../Redux/employeeSlice';
 import { toast } from 'react-toastify';
+import Sidebar from './Sidebar';
 
 const CreateEmployee = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,9 @@ const CreateEmployee = () => {
   };
 
   return (
+    <div className="flex h-screen  bg-gray-100">
+    <Sidebar/>
+    <main className="flex-1 p-6 mb-10">
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-semibold text-center mb-4">Create Employee</h2>
@@ -100,6 +104,8 @@ const CreateEmployee = () => {
           </div>
         </form>
       </div>
+    </div>
+    </main>
     </div>
   );
 };

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { assignTaskToEmployee } from '../../Redux/taskSlice';
+import Sidebar from '../Admin dashboard/Sidebar';
 
 const AssignTaskForm = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,9 @@ const AssignTaskForm = () => {
   };
 
   return (
+    <div className="flex h-screen bg-gray-100">
+    <Sidebar />
+    <main className="flex-1 p-8">
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold text-center mb-6">Assign Task to Employee</h2>
       <form onSubmit={handleAssignTask}>
@@ -57,6 +61,8 @@ const AssignTaskForm = () => {
         </button>
       </form>
       {message && <p className="mt-4 text-center text-gray-700">{message}</p>}
+    </div>
+    </main>
     </div>
   );
 };
