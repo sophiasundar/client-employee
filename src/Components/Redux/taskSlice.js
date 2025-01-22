@@ -28,13 +28,16 @@ export const fetchTaskById = createAsyncThunk(
   async (taskId, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
+      console.log('Fetching task with taskId:', taskId);
       const response = await axios.get(`${API}/api/task/${taskId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('Received task data:', response.data);
       return response.data.task;
     } catch (error) {
+      console.error('Error fetching task:', error);
       return rejectWithValue(error.response.data);
     }
   }
@@ -49,7 +52,7 @@ export const updateTask = createAsyncThunk(
   async ({ taskId, updatedData }, { getState, rejectWithValue }) => {
     try {
       const state = getState();
-      const token = state.auth.token; // Assuming you store the token in auth slice
+      const token = state.auth.token;
 
       const response = await axios.put(
         `${API}/api/task/${taskId}`,
@@ -73,7 +76,7 @@ export const deleteTask = createAsyncThunk(
   async (taskId, { getState, rejectWithValue }) => {
     try {
       const state = getState();
-      const token = state.auth.token; // Assuming you store the token in auth slice
+      const token = state.auth.token; 
 
       const response = await axios.delete(
         `${API}/api/task/${taskId}`,
@@ -97,7 +100,7 @@ export const createTask = createAsyncThunk(
   async (taskData, { getState, rejectWithValue }) => {
     try {
       const state = getState();
-      const token = state.auth.token; // Ensure the token is stored in auth slice
+      const token = state.auth.token; 
 
       const response = await axios.post(
         `${API}/api/task/create`, 
@@ -149,30 +152,31 @@ export const assignTaskToEmployee = createAsyncThunk(
 
 
 
-// Thunk to get a task by ID
-export const getTaskById = createAsyncThunk(
-  'tasks/getTaskById',
-  async (taskId, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${API}/api/tasks/${taskId}`);
-      return response.data.task;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+
+
 
 
 
 // Thunk to update task status
 export const updateTaskStatus = createAsyncThunk(
   'tasks/updateTaskStatus',
-  async ({ taskId, status }, { rejectWithValue }) => {
+  async ({ taskId, status }, {getState, rejectWithValue }) => {
     try {
-      const response = await axios.put(`${API}/api/tasks/status/${taskId}`, { status });
+      const state = getState();
+      const token = state.auth.token;
+
+      const response = await axios.put(`${API}/api/task/status/${taskId}`, { status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Authorization header
+          },
+        }
+
+      );
       return response.data.task;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      const errorMsg = error.response?.data || 'An error occurred';
+      return rejectWithValue(errorMsg.response.data);
     }
   }
 );
@@ -277,17 +281,6 @@ const tasksSlice = createSlice({
       .addCase(assignTaskToEmployee.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload.message;
-      })
-      .addCase(getTaskById.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getTaskById.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.task = action.payload;
-      })
-      .addCase(getTaskById.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
       })
       .addCase(updateTaskStatus.pending, (state) => {
         state.status = 'loading';

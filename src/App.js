@@ -11,16 +11,18 @@ import CreateEmployee from './Components/Pages/Admin dashboard/CreateEmployee';
 import AllTasks from './Components/Pages/Tasks/AllTasks';
 import CreateTask from './Components/Pages/Tasks/CreateTask';
 import AssignTask from './Components/Pages/Tasks/AssignTask';
-import TaskDetails from './Components/Pages/Tasks/TaskDetailsforEmployee';
 import ProtectedRoute from './Components/ProtectedRoute';
+import StartTimeLog from './Components/Pages/Timelog/StartTimeLog';
+import EndTimeLog from './Components/Pages/Timelog/EndTimeLog';
 
 
 function App() {
+ 
   return (
     <div className="App">
       <Routes>
         
-       {/* need to implement protected routes and roles  */}
+      
 
          <Route path='/register' element={<Register/>}></Route>
          <Route path='/' element={<Login/>}></Route>
@@ -41,7 +43,9 @@ function App() {
 
          
         <Route path='/employees/:id' element={<EmployeesPage />} /> 
-        <Route path='/employee-dashboard' element={<TaskDetails/>}/>
+        <Route path="/timelog/create" element={<StartTimeLog />} />
+        <Route path="/timelog/edit/:id" element={<EndTimeLog />} />
+        
         </Route>
 
         

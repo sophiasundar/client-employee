@@ -1,28 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { getEmployeeDetails } from '../../Redux/employeeSlice';
+import { updateTaskStatus } from '../../Redux/taskSlice'; // Import the updateTaskStatus action
 import Sidebar from './Sidebar';
-
-
 
 const EmployeesPage = () => {
   const dispatch = useDispatch();
   const { employeeDetails, status, error } = useSelector(state => state.employee);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [newStatus, setNewStatus] = useState('');
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     dispatch(getEmployeeDetails(userId));
   }, [dispatch]);
 
+  const handleStatusChange = (taskId) => {
+    setSelectedTaskId(taskId);
+    const task = employeeDetails.tasksAssigned.find(task => task._id === taskId);
+    setNewStatus(task.status); // Default to the current status
+  };
+
+  const handleSubmitStatusUpdate = (taskId) => {
+    if (newStatus !== '') {
+      dispatch(updateTaskStatus({ taskId, status: newStatus }))
+        .then(() => {
+          setSelectedTaskId(null);
+          setNewStatus('');
+        })
+        .catch((err) => {
+          alert('Error updating task status');
+        });
+    } else {
+      alert('Please select a status');
+    }
+  };
+
   return (
     <div className="flex h-screen">
       <Sidebar />
-      <main className="flex-1 p-6 mb-10">
-        <h2 className="text-2xl font-semibold mb-5">Employee Details</h2>
+      <main className="flex-1 p-6 mb-10 bg-gray-50">
+        <h2 className="text-3xl font-semibold mb-5 text-teal-600">Employee Details</h2>
         {status === 'loading' && <p>Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
         {employeeDetails && employeeDetails.user ? (
-          <div className="overflow-x-auto ">
+          <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-md">
             <table className="min-w-full table-auto">
               <thead className="bg-gray-100">
                 <tr>
@@ -58,11 +80,46 @@ const EmployeesPage = () => {
                 <tr className="bg-gray-100">
                   <td className="px-4 py-2 border" colSpan="2"><strong>Task Assigned</strong></td>
                 </tr>
-                {employeeDetails.tasksAssigned.map(task => (
+                {employeeDetails.tasksAssigned.map((task) => (
                   <React.Fragment key={task._id}>
                     <tr>
                       <td className="px-4 py-2 border">Status</td>
                       <td className="px-4 py-2 border">{task.status}</td>
+                      <td className="px-4 py-2 border">
+                        <button 
+                          className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
+                          onClick={() => handleStatusChange(task._id)}
+                        >
+                          Edit Status
+                        </button>
+                      </td>
+                    </tr>
+                    {selectedTaskId === task._id && (
+                      <tr>
+                        <td colSpan="3" className="px-4 py-2 border">
+                          <div className="flex items-center space-x-4">
+                            <select 
+                              className="px-4 py-2 border rounded-md"
+                              value={newStatus} 
+                              onChange={(e) => setNewStatus(e.target.value)}
+                            >
+                              <option value="">Select Status</option>
+                              <option value="In Progress">In Progress</option>
+                              <option value="Done">Completed</option>
+                            </select>
+                            <button 
+                              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                              onClick={() => handleSubmitStatusUpdate(task._id)}
+                            >
+                              Update Status
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                     <tr>
+                      <td className="px-4 py-2 border">Task Code</td>
+                      <td className="px-4 py-2 border">{task.taskCode}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 border">Description</td>
@@ -78,25 +135,6 @@ const EmployeesPage = () => {
                     </tr>
                   </React.Fragment>
                 ))}
-                <tr className="bg-gray-100">
-                  <td className="px-4 py-2 border" colSpan="2"><strong>Time Logs</strong></td>
-                </tr>
-                {employeeDetails.timeLogs.map(timeLog => (
-                  <React.Fragment key={timeLog._id}>
-                    <tr>
-                      <td className="px-4 py-2 border">Start Time</td>
-                      <td className="px-4 py-2 border">{new Date(timeLog.startTime).toLocaleString()}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border">End Time</td>
-                      <td className="px-4 py-2 border">{new Date(timeLog.endTime).toLocaleString()}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border">Duration</td>
-                      <td className="px-4 py-2 border">{timeLog.duration} hours</td>
-                    </tr>
-                  </React.Fragment>
-                ))}
               </tbody>
             </table>
           </div>
@@ -108,7 +146,5 @@ const EmployeesPage = () => {
   );
 };
 
-
-
-
 export default EmployeesPage;
+

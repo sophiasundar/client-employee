@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../Redux/authSlice'; 
-import { FaHome, FaUsers, FaTasks, FaCog, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUsers, FaTasks, FaCog, FaUserCircle, FaSignOutAlt, FaPlusCircle, FaEdit } from 'react-icons/fa';
 import { Link } from 'react-router-dom';  
 import { toast } from 'react-toastify';  
 
@@ -37,14 +37,6 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/employee-dashboard"  
-              className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
-            >
-              <FaUsers className="mr-3" /> Employee Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link
               to="/employees/:id"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
@@ -59,6 +51,27 @@ const Sidebar = () => {
               <FaTasks className="mr-3" /> Tasks (All Employees)
             </Link>
           </li>
+          
+          {/* Create Time Log Button */}
+          <li>
+            <Link
+              to="/timelog/create"  
+              className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
+            >
+              <FaPlusCircle className="mr-3" /> Create Time Log
+            </Link>
+          </li>
+          
+          {/* Edit Time Log Button */}
+          <li>
+            <Link
+              to="/timelog/edit/:id"  
+              className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
+            >
+              <FaEdit className="mr-3" /> Edit Time Log
+            </Link>
+          </li>
+
           <li>
             <Link
               to="/settings"  
@@ -82,4 +95,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

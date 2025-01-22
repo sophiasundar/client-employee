@@ -65,6 +65,19 @@ const Dashboard = () => {
               Approve Tasks
             </button>
           </div>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-700">TimeLogs </h2>
+            <p className="mt-2 text-gray-500">Admin can look for all timelogs of all employees.</p>
+            <button
+              className="mt-4 w-full py-2 px-4 bg-rose-400 text-white rounded-lg hover:bg-rose-500 transition"
+              onClick={() => navigate('/timelogs')}
+            >
+              TimeLogs
+            </button>
+          </div>
+
+
+
         </div>
       </main>
     </div>
