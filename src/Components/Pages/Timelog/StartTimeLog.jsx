@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createTimeLog } from '../../Redux/TimelogSlice'; 
 import { toast } from 'react-toastify';
@@ -9,6 +9,21 @@ const StartTimeLog = () => {
   const [error, setError] = useState('');
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Get the current UTC time
+    const utcDate = new Date();
+
+    // Add 5 hours and 30 minutes to UTC time for Chennai (IST)
+    utcDate.setHours(utcDate.getHours() + 5);
+    utcDate.setMinutes(utcDate.getMinutes() + 30);
+
+    // Convert the updated time to ISO string and format it as 'yyyy-MM-ddThh:mm' for datetime-local input
+    const formattedTime = utcDate.toISOString().slice(0, 16);
+
+    // Set the formatted IST time in the state
+    setStartTime(formattedTime);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +36,6 @@ const StartTimeLog = () => {
     dispatch(createTimeLog({ taskCode, startTime }));
     toast.success('Time log started successfully!');
     setTaskCode('');
-    setStartTime('');
   };
 
   return (
@@ -56,9 +70,10 @@ const StartTimeLog = () => {
             type="datetime-local"
             id="startTime"
             value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            onChange={(e) => setStartTime(e.target.value)} 
             className="mt-2 p-2 border border-gray-300 rounded-md"
             required
+            readOnly 
           />
         </div>
 
@@ -74,3 +89,4 @@ const StartTimeLog = () => {
 };
 
 export default StartTimeLog;
+

@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateTimeLog } from '../../Redux/TimelogSlice'; 
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { updateTimeLog } from '../../Redux/TimelogSlice';
 import { toast } from 'react-toastify';
 
 const EndTimeLog = () => {
+  const dispatch = useDispatch();
   const [endTime, setEndTime] = useState('');
   const [error, setError] = useState('');
 
-  const dispatch = useDispatch();
-  const { id } = useParams(); 
-  console.log('ID:', id);
+  const currentTimeLog = useSelector((state) => state.timeLogs.currentTimeLog);
+
+  useEffect(() => {
+    // Get the current UTC time
+    const utcDate = new Date();
+
+    // Add 5 hours and 30 minutes to UTC time for Chennai (IST)
+    utcDate.setHours(utcDate.getHours() + 5);
+    utcDate.setMinutes(utcDate.getMinutes() + 30);
+
+    // Convert the updated time to ISO string and format it as 'yyyy-MM-ddThh:mm' for datetime-local input
+    const formattedTime = utcDate.toISOString().slice(0, 16);
+
+    // Set the formatted IST time in the state
+    setEndTime(formattedTime);
+  }, []); // This will run once when the component mounts
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +32,22 @@ const EndTimeLog = () => {
       setError('Please enter the End Time.');
       return;
     }
+    setError('');
 
-    dispatch(updateTimeLog({ id, endTime }));
-    toast.success('Time log updated successfully!');
-    setEndTime('');
+    if (!currentTimeLog || !currentTimeLog._id) {
+      toast.error('No active time log found!');
+      return;
+    }
+
+    try {
+      await dispatch(
+        updateTimeLog({ id: currentTimeLog._id, endTime })
+      ).unwrap(); // Unwrap to handle success/errors
+      toast.success('Time log updated successfully!');
+      setEndTime(''); // Clear endTime after successful submission
+    } catch (err) {
+      toast.error(err || 'Failed to update time log.');
+    }
   };
 
   return (
@@ -41,9 +66,10 @@ const EndTimeLog = () => {
             type="datetime-local"
             id="endTime"
             value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            onChange={(e) => setEndTime(e.target.value)} 
             className="mt-2 p-2 border border-gray-300 rounded-md"
             required
+            readOnly 
           />
         </div>
 
@@ -51,7 +77,7 @@ const EndTimeLog = () => {
           type="submit"
           className="w-full py-2 px-4 mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
         >
-          End Time Log
+          Submit End Time
         </button>
       </form>
     </div>
@@ -59,3 +85,5 @@ const EndTimeLog = () => {
 };
 
 export default EndTimeLog;
+
+

@@ -20,7 +20,7 @@ export const createTimeLog = createAsyncThunk(
         }
       );
 
-      return response.data; // Ensure the response includes the new time log with `id`
+      return response.data.timeLog; //the response includes the new time log with `id`, Return the entire timelog object
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to create time log');
     }
@@ -65,7 +65,8 @@ export const updateTimeLog = createAsyncThunk(
 const timeLogSlice = createSlice({
     name: 'timeLogs',
     initialState: {
-      timeLogs: [],
+      timeLogs: [], // for storing all timelogs
+      currentTimeLog: null, //for for current active logs
       status: 'idle',
       error: null,
     },
@@ -76,8 +77,9 @@ const timeLogSlice = createSlice({
           state.status = 'loading';
         })
         .addCase(createTimeLog.fulfilled, (state, action) => {
-          state.status = 'succeeded';
-          state.timeLogs.push(action.payload); // Add the new time log to the state
+           state.status = 'succeeded';
+        state.timeLogs.push(action.payload); // Add the new time log to the array
+        state.currentTimeLog = action.payload; // Set the current log for immediate use
         })
         .addCase(createTimeLog.rejected, (state, action) => {
           state.status = 'failed';
