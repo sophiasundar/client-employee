@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
-  
+
   const [formData, setFormData] = useState({ email: '', password: '' });
 
   const handleChange = (e) => {
@@ -23,6 +24,7 @@ const Login = () => {
       const action = await dispatch(loginUser(formData));
       if (loginUser.fulfilled.match(action)) {
         toast.success('Login successful!');
+        navigate('/dashboard'); // Navigate only if the login is successful
       }
     } catch (err) {
       toast.error('Login failed!');
@@ -52,15 +54,16 @@ const Login = () => {
           className="block w-full p-2 mb-4 border rounded"
           required
         />
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded" disabled={loading}
-           onClick={() => navigate('/dashboard')}
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded"
+          disabled={loading}
         >
           {loading ? 'Logging in...' : 'Login'}
-          
         </button>
-        <p className="text-ascent-2 text-sm text-center mt-0">
-          Don't have an account? 
-          <Link to='/register' className="text-[#065ad8] font-semibold ml-2 cursor-pointer">
+        <p className="text-ascent-2 text-sm text-center mt-4">
+          Don't have an account?
+          <Link to="/register" className="text-[#065ad8] font-semibold ml-2 cursor-pointer">
             Create Account
           </Link>
         </p>
@@ -70,3 +73,4 @@ const Login = () => {
 };
 
 export default Login;
+
