@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateTimeLog } from '../../Redux/TimelogSlice';
 import { toast } from 'react-toastify';
+import Sidebar from '../Admin dashboard/Sidebar';
 
 const EndTimeLog = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,9 @@ const EndTimeLog = () => {
   };
 
   return (
+    <div className="flex h-screen bg-gray-100">
+    <Sidebar />
+    <main className="flex-1 p-8">
     <div className="max-w-2xl mx-auto p-4 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-4 text-center">End Time Log</h2>
 
@@ -80,6 +84,8 @@ const EndTimeLog = () => {
           Submit End Time
         </button>
       </form>
+    </div>
+    </main>
     </div>
   );
 };

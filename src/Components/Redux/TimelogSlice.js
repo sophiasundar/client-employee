@@ -41,13 +41,13 @@ export const updateTimeLog = createAsyncThunk(
         const state = getState();
         const token = state.auth.token;
   
-        // Make the API request to update the time log entry with the end time
+        
         const response = await axios.put(
           `${API}/api/timelog/update/${id}`,
           { endTime },
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include token in the request header
+              Authorization: `Bearer ${token}`, 
             },
           }
         );
@@ -61,6 +61,52 @@ export const updateTimeLog = createAsyncThunk(
       }
     }
   );
+
+  // Async thunk to fetch all time logs 
+export const getAllTimeLogs = createAsyncThunk(
+  'timeLogs/getAllTimeLogs',
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API}/api/timelog/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
+      return response.data.timeLogs; 
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to fetch time logs'
+      );
+    }
+  }
+);
+
+// Async thunk to fetch time logs
+export const getTimeLogs = createAsyncThunk(
+  'timelogs/getTimeLogs',
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token'); 
+      if (!token) {
+        throw new Error('User is not authenticated');
+      }
+
+      // Make an API call to fetch time logs
+      const response = await axios.get(`${API}/api/timelog/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
+
+      return response.data.timeLogs; 
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to fetch time logs'
+      );
+    }
+  }
+);
 
 const timeLogSlice = createSlice({
     name: 'timeLogs',
@@ -98,6 +144,31 @@ const timeLogSlice = createSlice({
         })
         .addCase(updateTimeLog.rejected, (state, action) => {
           state.status = 'failed';
+          state.error = action.payload;
+        })
+        .addCase(getAllTimeLogs.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(getAllTimeLogs.fulfilled, (state, action) => {
+          state.loading = false;
+          state.timeLogs = action.payload; 
+        })
+        .addCase(getAllTimeLogs.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload; 
+        })
+        .addCase(getTimeLogs.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(getTimeLogs.fulfilled, (state, action) => {
+          console.log('Fulfilled payload:', action.payload);
+          state.loading = false;
+          state.timeLogs = action.payload; 
+        })
+        .addCase(getTimeLogs.rejected, (state, action) => {
+          state.loading = false;
           state.error = action.payload;
         });
     },

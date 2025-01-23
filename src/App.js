@@ -14,6 +14,8 @@ import AssignTask from './Components/Pages/Tasks/AssignTask';
 import ProtectedRoute from './Components/ProtectedRoute';
 import StartTimeLog from './Components/Pages/Timelog/StartTimeLog';
 import EndTimeLog from './Components/Pages/Timelog/EndTimeLog';
+import AdminTimeLogs from './Components/Pages/Timelog/AdminTimeLogs';
+import EmployeeTimeLogs from './Components/Pages/Timelog/EmployeeTimelogs';
 
 
 function App() {
@@ -36,6 +38,7 @@ function App() {
          <Route path='/tasks' element={<AllTasks/>} />
          <Route path='/create-task' element={<CreateTask/>}/>
          <Route path='/task-assign' element={<AssignTask />}/>
+         <Route path='/timelogs' element={<AdminTimeLogs/>} />
 
          </Route>
 
@@ -45,7 +48,8 @@ function App() {
         <Route path='/employees/:id' element={<EmployeesPage />} /> 
         <Route path="/timelog/create" element={<StartTimeLog />} />
         <Route path="/timelog/edit/:id" element={<EndTimeLog />} />
-        
+        <Route path="/timelog" element={<EmployeeTimeLogs/>} />
+
         </Route>
 
         

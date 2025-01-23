@@ -80,61 +80,82 @@ const EmployeesPage = () => {
                 <tr className="bg-gray-100">
                   <td className="px-4 py-2 border" colSpan="2"><strong>Task Assigned</strong></td>
                 </tr>
-                {employeeDetails.tasksAssigned.map((task) => (
-                  <React.Fragment key={task._id}>
-                    <tr>
-                      <td className="px-4 py-2 border">Status</td>
-                      <td className="px-4 py-2 border">{task.status}</td>
-                      <td className="px-4 py-2 border">
-                        <button 
-                          className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
-                          onClick={() => handleStatusChange(task._id)}
-                        >
-                          Edit Status
-                        </button>
-                      </td>
-                    </tr>
-                    {selectedTaskId === task._id && (
-                      <tr>
-                        <td colSpan="3" className="px-4 py-2 border">
-                          <div className="flex items-center space-x-4">
-                            <select 
-                              className="px-4 py-2 border rounded-md"
-                              value={newStatus} 
-                              onChange={(e) => setNewStatus(e.target.value)}
-                            >
-                              <option value="">Select Status</option>
-                              <option value="In Progress">In Progress</option>
-                              <option value="Done">Completed</option>
-                            </select>
-                            <button 
-                              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                              onClick={() => handleSubmitStatusUpdate(task._id)}
-                            >
-                              Update Status
-                            </button>
-                          </div>
+                {employeeDetails.tasksAssigned.map((task) => {
+                  const isDeadlineClose = new Date(task.deadline) <= new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // Deadline within 3 days
+                  const isDeadlinePast = new Date(task.deadline) < new Date(); // Deadline has passed
+
+                  return (
+                    <React.Fragment key={task._id}>
+                      <tr className="relative">
+                        <td className="px-4 py-2 border">Status</td>
+                        <td className="px-4 py-2 border">{task.status}</td>
+                        <td className="px-4 py-2 border">
+                          <button 
+                            className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
+                            onClick={() => handleStatusChange(task._id)}
+                          >
+                            Edit Status
+                          </button>
                         </td>
+                        {/* Badge for Deadline */}
+                        <span
+                          className={`absolute top-2 right-2 px-3 py-1 rounded-full text-sm font-bold ${
+                            isDeadlinePast
+                              ? 'bg-red-100 text-red-600' // Deadline has passed
+                              : isDeadlineClose
+                              ? 'bg-orange-100 text-orange-600' // Deadline is close
+                              : 'bg-green-100 text-green-600' // Deadline is far away
+                          }`}
+                        >
+                          {isDeadlinePast
+                            ? 'Deadline Passed'
+                            : isDeadlineClose
+                            ? 'Deadline Approaching'
+                            : 'Deadline Far Away'}
+                        </span>
                       </tr>
-                    )}
-                     <tr>
-                      <td className="px-4 py-2 border">Task Code</td>
-                      <td className="px-4 py-2 border">{task.taskCode}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border">Description</td>
-                      <td className="px-4 py-2 border">{task.description}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border">Deadline</td>
-                      <td className="px-4 py-2 border">{new Date(task.deadline).toLocaleDateString()}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-2 border">Project</td>
-                      <td className="px-4 py-2 border">{task.project}</td>
-                    </tr>
-                  </React.Fragment>
-                ))}
+                      {selectedTaskId === task._id && (
+                        <tr>
+                          <td colSpan="3" className="px-4 py-2 border">
+                            <div className="flex items-center space-x-4">
+                              <select 
+                                className="px-4 py-2 border rounded-md"
+                                value={newStatus} 
+                                onChange={(e) => setNewStatus(e.target.value)}
+                              >
+                                <option value="">Select Status</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Done">Completed</option>
+                              </select>
+                              <button 
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                onClick={() => handleSubmitStatusUpdate(task._id)}
+                              >
+                                Update Status
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                      <tr>
+                        <td className="px-4 py-2 border">Task Code</td>
+                        <td className="px-4 py-2 border">{task.taskCode}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Description</td>
+                        <td className="px-4 py-2 border">{task.description}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Deadline</td>
+                        <td className="px-4 py-2 border">{new Date(task.deadline).toLocaleDateString()}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 border">Project</td>
+                        <td className="px-4 py-2 border">{task.project}</td>
+                      </tr>
+                    </React.Fragment>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -147,4 +168,5 @@ const EmployeesPage = () => {
 };
 
 export default EmployeesPage;
+
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../Redux/authSlice'; 
-import { FaHome, FaUsers, FaTasks, FaCog, FaUserCircle, FaSignOutAlt, FaPlusCircle, FaEdit } from 'react-icons/fa';
+import { FaHome, FaClock, FaUser, FaTasks, FaCog, FaUserCircle, FaSignOutAlt, FaHourglassStart, FaHourglassEnd} from 'react-icons/fa';
 import { Link } from 'react-router-dom';  
 import { toast } from 'react-toastify';  
 
@@ -37,20 +37,29 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/employees/:id"  
-              className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
-            >
-              <FaUsers className="mr-3" /> Employee Record
-            </Link>
-          </li>
-          <li>
-            <Link
               to="/tasks"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
               <FaTasks className="mr-3" /> Tasks (All Employees)
             </Link>
           </li>
+          <li>
+            <Link
+              to="/employees/:id"  
+              className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
+            >
+              <FaUser className="mr-3" />  Employee Record
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/timelog"  
+              className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
+            >
+              <FaClock className="mr-3" /> Employee Timelog
+            </Link>
+          </li>
+          
           
           {/* Create Time Log Button */}
           <li>
@@ -58,7 +67,7 @@ const Sidebar = () => {
               to="/timelog/create"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
-              <FaPlusCircle className="mr-3" /> Create Time Log
+              <FaHourglassStart className="text-green-500 " /> Start Time Log
             </Link>
           </li>
           
@@ -68,7 +77,7 @@ const Sidebar = () => {
               to="/timelog/edit/:id"  
               className="flex items-center py-2 px-4 rounded-lg transition-all hover:bg-blue-700 hover:scale-105"
             >
-              <FaEdit className="mr-3" /> Edit Time Log
+              <FaHourglassEnd className="text-red-500 " /> End Time Log
             </Link>
           </li>
 

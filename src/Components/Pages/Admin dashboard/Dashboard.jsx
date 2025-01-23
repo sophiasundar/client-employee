@@ -57,7 +57,7 @@ const Dashboard = () => {
 
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-700">Task Approval</h2>
-            <p className="mt-2 text-gray-500">Approve or reject tasks, when the employee completed the task.</p>
+            <p className="mt-2 text-gray-500">Approve or reject tasks, depends on the completion.</p>
             <button
               className="mt-4 w-full py-2 px-4 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition"
               onClick={() => navigate('/Approval')}
