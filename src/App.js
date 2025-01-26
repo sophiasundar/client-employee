@@ -16,6 +16,8 @@ import StartTimeLog from './Components/Pages/Timelog/StartTimeLog';
 import EndTimeLog from './Components/Pages/Timelog/EndTimeLog';
 import AdminTimeLogs from './Components/Pages/Timelog/AdminTimeLogs';
 import EmployeeTimeLogs from './Components/Pages/Timelog/EmployeeTimelogs';
+import ApproveRejectTask from './Components/Pages/Tasks/ApproveRejectTask';
+
 
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
          <Route path='/create-task' element={<CreateTask/>}/>
          <Route path='/task-assign' element={<AssignTask />}/>
          <Route path='/timelogs' element={<AdminTimeLogs/>} />
+         <Route path='/Approval' element={<ApproveRejectTask/>} />
 
          </Route>
 

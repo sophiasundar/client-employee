@@ -26,7 +26,7 @@ const EmployeesRecord = () => {
       dispatch(updateEmployee({ id: editingEmployee._id, position: newPosition, department: newDepartment }))
         .then(() => {
           toast.success('Employee updated successfully');
-          setEditingEmployee(null); // Close the edit form
+          setEditingEmployee(null); 
         })
         .catch(() => toast.error('Failed to update employee'));
     } else {

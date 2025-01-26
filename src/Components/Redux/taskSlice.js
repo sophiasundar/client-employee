@@ -15,6 +15,7 @@ export const fetchAllTasks = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('Fetched tasks:', response.data.tasks);
       return response.data.tasks;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -151,12 +152,6 @@ export const assignTaskToEmployee = createAsyncThunk(
 );
 
 
-
-
-
-
-
-
 // Thunk to update task status
 export const updateTaskStatus = createAsyncThunk(
   'tasks/updateTaskStatus',
@@ -181,6 +176,33 @@ export const updateTaskStatus = createAsyncThunk(
   }
 );
 
+
+
+// Approve or Reject Task Async Thunk
+export const approveOrRejectTask = createAsyncThunk(
+  'task/approveOrRejectTask',
+  async ({ id, approvalStatus }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${API}/api/task/approve-reject/${id}`,
+        { approvalStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      return response.data; // Return updated task data
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data
+          ? error.response.data
+          : { message: 'Something went wrong' }
+      );
+    }
+  }
+);
 
 
 
@@ -212,7 +234,7 @@ const tasksSlice = createSlice({
       .addCase(fetchAllTasks.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
 
     // Handle fetchTaskById
     builder
@@ -292,6 +314,24 @@ const tasksSlice = createSlice({
       .addCase(updateTaskStatus.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
+      })
+      .addCase(approveOrRejectTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(approveOrRejectTask.fulfilled, (state, action) => {
+        state.loading = false;
+        // Assuming response contains the updated task data
+        const updatedTask = action.payload;
+        // Update the task in the state by its ID
+        const index = state.tasks.findIndex((task) => task.id === updatedTask.id);
+        if (index !== -1) {
+          state.tasks[index] = updatedTask;
+        }
+      })
+      .addCase(approveOrRejectTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Something went wrong';
       });
   },
 });
